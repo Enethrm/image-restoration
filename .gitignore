@@ -1,0 +1,8 @@
+.venv/
+__pycache__/
+*.jpg
+*.jpeg
+*.png
+colorization_model/
+denoising_model/
+super_resolution_model/
