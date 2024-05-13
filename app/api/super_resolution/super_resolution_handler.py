@@ -12,7 +12,7 @@ super_resolution_router = APIRouter(prefix='/super_resolution')
 
 @super_resolution_router.post('/')
 async def super_resolution_handler(file: UploadFile):
-    path_to_file = f'./temp{file.filename}'
+    path_to_file = f'./temp/{file.filename}'
     with open(path_to_file, 'wb+') as file_obj:
         file_obj.write(file.file.read())
 

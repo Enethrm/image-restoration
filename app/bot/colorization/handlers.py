@@ -1,10 +1,8 @@
 import requests
-import os
 
 from aiogram import Router, F, types, Bot
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
-from aiogram.filters import StateFilter
 from helpers.text_helper import get_text_from_config
 
 
@@ -28,7 +26,7 @@ async def colorization_send_photo(message: types.Message, state: FSMContext, bot
     await bot.download(message.photo[-1], destination=path_to_photo)
     await message.answer(get_text_from_config('api_proccess', block='RESPONSE'))
 
-    proccess_file = requests.post('http://127.0.0.1:8000/colorization/', files={'file': open(path_to_photo, 'rb')})
+    proccess_file = requests.post('http://api:8000/colorization/', files={'file': open(path_to_photo, 'rb')})
     with open(path_to_photo, 'wb') as photo:
         photo.write(proccess_file.content)
     await message.answer_photo(photo=types.FSInputFile(path=path_to_photo))
