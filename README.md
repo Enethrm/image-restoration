@@ -1,2 +1,5 @@
 # image-restoration
-docker-compose -f docker-compose.yaml up --build -d
+# Чтобы запустить:
+sudo docker-compose up --build
+# Чтобы остановить:
+sudo docker-compose down
