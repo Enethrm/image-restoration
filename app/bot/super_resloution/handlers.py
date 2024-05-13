@@ -23,7 +23,7 @@ async def super_resolution_get_photo(message: types.Message, state: FSMContext):
 
 @super_resolution_router.message(SuperResolutionStates.start_super_resolution, F.photo)
 async def super_resolution_send_photo(message: types.Message, state: FSMContext, bot: Bot):
-    path_to_photo = f'/home/egor/arsen/image-restoration/app/bot/temp/{message.photo[-1].file_unique_id}.jpg'
+    path_to_photo = f'./temp/{message.photo[-1].file_unique_id}.jpg'
     await bot.download(message.photo[-1], destination=path_to_photo)
     await message.answer(get_text_from_config('api_proccess', block='RESPONSE'))
 

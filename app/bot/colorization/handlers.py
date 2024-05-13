@@ -1,4 +1,5 @@
 import requests
+import os
 
 from aiogram import Router, F, types, Bot
 from aiogram.fsm.context import FSMContext
@@ -23,7 +24,7 @@ async def colorization_get_photo(message: types.Message, state: FSMContext):
 
 @colorization_router.message(ColorizationStates.start_colorization, F.photo)
 async def colorization_send_photo(message: types.Message, state: FSMContext, bot: Bot):
-    path_to_photo = f'/home/egor/arsen/image-restoration/app/bot/temp/{message.photo[-1].file_unique_id}.jpg'
+    path_to_photo = f'./temp/{message.photo[-1].file_unique_id}.jpg'
     await bot.download(message.photo[-1], destination=path_to_photo)
     await message.answer(get_text_from_config('api_proccess', block='RESPONSE'))
 

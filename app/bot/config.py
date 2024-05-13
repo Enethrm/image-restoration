@@ -1,6 +1,6 @@
 from configparser import ConfigParser
-
+import os
 
 cfg = ConfigParser() 
-cfg.read("/home/egor/arsen/image-restoration/app/bot/config.ini", encoding="utf-8")
+cfg.read(os.path.join(os.path.dirname(__file__), 'config.ini'),encoding='utf-8')
 
