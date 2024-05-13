@@ -11,14 +11,14 @@ colorization_router = APIRouter(prefix='/colorization')
 
 @colorization_router.post('/')
 async def colorization_proccess(file: UploadFile):
-    path_to_file = f'/home/egor/arsen/image-restoration/app/api/temp{file.filename}' 
+    path_to_file = f'./temp/{file.filename}' 
     with open(path_to_file, 'wb+') as file_obj:
         file_obj.write(file.file.read())
 
 
-    PROTOTXT = '/home/egor/arsen/image-restoration/app/api/source/colorization_model/colorization_deploy_v2.prototxt'
-    POINTS = '/home/egor/arsen/image-restoration/app/api/source/colorization_model/pts_in_hull.npy'
-    MODEL = '/home/egor/arsen/image-restoration/app/api/source/colorization_model/colorization_release_v2.caffemodel'
+    PROTOTXT = './source/colorization_model/colorization_deploy_v2.prototxt'
+    POINTS = './source/colorization_model/pts_in_hull.npy'
+    MODEL = './source/colorization_model/colorization_release_v2.caffemodel'
 
 
     net = cv2.dnn.readNetFromCaffe(PROTOTXT, MODEL)
@@ -52,8 +52,8 @@ async def colorization_proccess(file: UploadFile):
     colorized = (255 * colorized).astype("uint8")
 
     # сохранить numpy array как Image
-    cv2.imwrite('/home/egor/arsen/image-restoration/app/api/temp/Colorized.png', colorized)
+    cv2.imwrite(path_to_file, colorized)
 
     
 
-    return FileResponse(path='/home/egor/arsen/image-restoration/app/api/temp/Colorized.png')
+    return FileResponse(path=path_to_file)

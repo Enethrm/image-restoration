@@ -12,20 +12,17 @@ super_resolution_router = APIRouter(prefix='/super_resolution')
 
 @super_resolution_router.post('/')
 async def super_resolution_handler(file: UploadFile):
-    path_to_file = f'/home/egor/arsen/image-restoration/app/api/temp{file.filename}'
+    path_to_file = f'./temp{file.filename}'
     with open(path_to_file, 'wb+') as file_obj:
         file_obj.write(file.file.read())
 
-    model_path = '/home/egor/arsen/image-restoration/app/api/source/super_resolution_model/RRDB_ESRGAN_x4.pth'  
+    model_path = './source/super_resolution_model/RRDB_ESRGAN_x4.pth'  
     device = torch.device('cpu')
 
     model = RRDBNet(3, 3, 64, 23, gc=32)
     model.load_state_dict(torch.load(model_path), strict=True)
     model.eval()
     model = model.to(device)
-
-
-    path_to_file = f'/home/egor/arsen/image-restoration/app/api/temp{file.filename}'
 
     
     img = cv2.imread(path_to_file, cv2.IMREAD_COLOR)
