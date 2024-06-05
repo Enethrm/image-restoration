@@ -1,3 +1,4 @@
+import os
 import requests
 
 from aiogram import Router, F, types, Bot
@@ -14,7 +15,7 @@ class SuperResolutionStates(StatesGroup):
 super_resolution_router = Router()
 
 
-@super_resolution_router.message(F.text.lower() == 'увеличить разрешение')
+@super_resolution_router.message(F.text == get_text_from_config('super_resolution', 'BUTTONS'))
 async def super_resolution_get_photo(message: types.Message, state: FSMContext):
     await message.answer(get_text_from_config('post_photo', block='RESPONSE'))
     await state.set_state(SuperResolutionStates.start_super_resolution)
@@ -22,7 +23,11 @@ async def super_resolution_get_photo(message: types.Message, state: FSMContext):
 
 @super_resolution_router.message(SuperResolutionStates.start_super_resolution, F.photo)
 async def super_resolution_send_photo(message: types.Message, state: FSMContext, bot: Bot):
-    path_to_photo = f'./temp/{message.photo[-1].file_unique_id}.jpg'
+    path_to_folder = './temp'
+    for file_name in os.listdir('./temp'):
+        os.remove(os.path.join(path_to_folder, file_name))
+
+    path_to_photo = f'{path_to_folder}/{message.photo[-1].file_unique_id}.jpg'
     await bot.download(message.photo[-1], destination=path_to_photo)
     await message.answer(get_text_from_config('api_proccess', block='RESPONSE'))
 
