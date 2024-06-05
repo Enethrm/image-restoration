@@ -1,6 +1,7 @@
+import os
 import cv2
-import numpy as np
 import torch
+import numpy as np
 from .RRDBNet_arch import RRDBNet
 
 from fastapi import APIRouter, UploadFile
@@ -12,7 +13,11 @@ super_resolution_router = APIRouter(prefix='/super_resolution')
 
 @super_resolution_router.post('/')
 async def super_resolution_handler(file: UploadFile):
-    path_to_file = f'./temp/{file.filename}'
+    path_to_folder = './temp'
+    for file_name in os.listdir('./temp'):
+        os.remove(os.path.join(path_to_folder, file_name))
+
+    path_to_file = f'{path_to_folder}/{file.filename}'
     with open(path_to_file, 'wb+') as file_obj:
         file_obj.write(file.file.read())
 

@@ -1,6 +1,6 @@
-import numpy as np
-import cv2
 import os
+import cv2
+import numpy as np
 
 from fastapi import APIRouter, UploadFile
 from fastapi.responses import FileResponse
@@ -11,7 +11,10 @@ colorization_router = APIRouter(prefix='/colorization')
 
 @colorization_router.post('/')
 async def colorization_proccess(file: UploadFile):
-    path_to_file = f'./temp/{file.filename}' 
+    path_to_folder = './temp'
+    for file_name in os.listdir('./temp'):
+        os.remove(os.path.join(path_to_folder, file_name))
+    path_to_file = f'{path_to_folder}/{file.filename}' 
     with open(path_to_file, 'wb+') as file_obj:
         file_obj.write(file.file.read())
 

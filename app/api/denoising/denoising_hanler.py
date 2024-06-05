@@ -1,17 +1,15 @@
 import os
-import argparse
-import time
-import numpy as np
 import cv2
 import torch
+import numpy as np
 import torch.nn as nn
-from torch.autograd import Variable
 from .models import FFDNet
-from .utils import normalize,\
-				variable_to_cv2_image, remove_dataparallel_wrapper, is_rgb
+from torch.autograd import Variable
 
 from fastapi import APIRouter, UploadFile
 from fastapi.responses import FileResponse
+from .utils import normalize,\
+				variable_to_cv2_image, remove_dataparallel_wrapper, is_rgb
 
 
 denoising_router = APIRouter(prefix='/denoising')
@@ -19,9 +17,11 @@ denoising_router = APIRouter(prefix='/denoising')
 
 @denoising_router.post('/')
 async def denoising_handler(file: UploadFile):
-    
+	path_to_folder = './temp'
+	for file_name in os.listdir(path_to_folder):
+		os.remove(os.path.join(path_to_folder, file_name))
 
-	path_to_file = f'./temp/{file.filename}'
+	path_to_file = f'{path_to_folder}/{file.filename}'
 	with open(path_to_file, 'wb+') as file_obj:
 		file_obj.write(file.file.read())
 	try:
