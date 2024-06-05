@@ -1,16 +1,18 @@
 import asyncio
-from aiogram import Bot, Dispatcher
-from aiogram.types import Message, ReplyKeyboardMarkup, KeyboardButton
-from aiogram.filters import CommandStart
 
-from helpers.text_helper import get_text_from_config
+from aiogram import Bot, Dispatcher
+from aiogram.filters import CommandStart
+from aiogram.types import Message, ReplyKeyboardMarkup, KeyboardButton
+
 from settings import BOT_TOKEN
+from denoising.handlers import denoising_router
+from helpers.text_helper import get_text_from_config
 from colorization.handlers import  colorization_router
 from super_resloution.handlers import super_resolution_router
-from denoising.handlers import denoising_router
 
 
 bot = Bot(token=BOT_TOKEN)
+
 
 dp = Dispatcher()
 dp.include_router(colorization_router)
